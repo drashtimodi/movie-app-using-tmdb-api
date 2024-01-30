@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="detail-Fav.css">
+    <link rel="stylesheet" href="trending-movie.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+
+<body>
+    <header>
+        <!-- nav -->
+        <div class="nav">
+            <!-- logo -->
+            <a href="index.html" class="logo">
+                Watch <span>!T</span>
+            </a>
+            <!-- search box -->
+            <div class="search-box">
+                <input type="search" name="" placeholder="Search movie" id="search-input">
+                <i class="fa fa-search" id="search"></i>
+            </div>
+            <!-- nav-bar -->
+            <div class="navbar">
+                <a href="index.html" class="nav-link nav-active">
+                    <i class="fa fa-home"></i>
+                    <span class="nav-link-title">Home</span>
+                </a>
+                <a href="trending.html" class="nav-link">
+                    <i class="fa-sharp fa-solid fa-fire-flame-curved"></i>
+                    <span class="nav-link-title">Trending</span>
+                </a>
+                <!-- <a href="#home" class="nav-link">
+                    <i class="fa-solid fa-compass"></i>
+                    <span class="nav-link-title">Explore</span>
+                </a> -->
+                <a href="movies.html" class="nav-link">
+                    <i class="fa-solid fa-tv"></i>
+                    <span class="nav-link-title">Movie</span>
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </header>
+
+    <main>
+        <section>
+            <h1>All Movies</h1>
+            <!-- <div style="margin: 30px 30px 20px;font-size: 25px;">Trending 1</div> -->
+            <div class="trend">
+
+                <div class="trend-2">
+                    <!-- <div class="image-card">
+                        <img src="" alt="">
+                        <div class="title-info">
+                            <span style="font-size:20px;font-Family:arial" ;></span>
+                        </div>
+                    </div> -->
+                </div>
+                <button class="btn">Load More</button>
+
+            </div>
+        </section>
+
+    </main>
+    <!-- <script src="trending.js"></script> -->
+    <script src="search.js"></script>
+    <script>
+        const trend = document.querySelector(".trend-2");
+        const loadMoreButton = document.querySelector(".btn");
+        let currentPage = 9; // keep track of the current page of data
+
+
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkYmEyNGZmMWQ4ZDJmMTczNzJiZWVkMzc2ZTliN2E1NyIsInN1YiI6IjY1YTIzOWNiMjM4NTEzMDEyYjYyNTg2ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.9SO1t7bi2KObBaXRSGyMs0LTSeKWbNbM-UCzjZJFfgc'
+            }
+        };
+
+
+        function fetchData() {
+            // Make your API request here, using a library like fetch or axios
+            // Replace 'your-api-endpoint' with the actual API endpoint
+            const apiUrl = `https://api.themoviedb.org/3/discover/movie?include_adult=false&page=${currentPage}`;
+
+            fetch(apiUrl, options)
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data);
+                    data.results.forEach(element => {
+                        // console.log(data.results);
+
+                        // const randomIndex = Math.floor(Math.random() * data.results.length);
+
+                        const movieTitle = element.title
+                            // document.querySelector(".title h1").textContent = movieTitle;
+                            // const movieId = element.id;
+                            // console.log(movieId)
+                        const movieBackdrop = element.poster_path;
+                        const backdropUrl = `https://images.tmdb.org/t/p/original/` + movieBackdrop;
+                        if (movieBackdrop != null) {
+                            let card = document.createElement("div");
+                            card.className = "image-card"
+                                // card.onclick = display()
+                            card.innerHTML = `<img onclick="showMovie(${element.id})" src="${backdropUrl}" alt="${movieTitle}">
+                            <div class="title-info">
+                    
+                    <span>${element.vote_average}</span>
+                    
+
+                    
+                </div>`
+                                // card.addEventListener('dbclick', () => showMovie(element.id))
+                            trend.appendChild(card);
+                        }
+
+
+                    });
+
+                    currentPage++;
+
+
+                })
+                .catch(err => console.error(err));
+        }
+
+        function loadMoreData() {
+            fetchData();
+        }
+
+        // Attach the loadMoreData function to the button click event
+        loadMoreButton.addEventListener("click", loadMoreData);
+
+        // Initial data load (you can call this on page load or whenever appropriate)
+        fetchData();
+
+
+
+
+        // for movie details
+
+        function showMovie(movieId) {
+            window.location.href = `movie-details.html?id=${movieId}`
+        }
+    </script>
+</body>
+
+</html>
