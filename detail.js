@@ -96,7 +96,15 @@ fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_v
 
 
 function displayMovies(url, head) {
-    const main = document.querySelector(`main`);
+    
+
+    for (let page = 6; page <= 10; page++) {
+        fetch(`${url}&page=${page}`, options)
+            .then(response => response.json())
+            .then(response => {
+                // console.log(response)
+
+const main = document.querySelector(`main`);
 
     const sec = document.createElement("section")
 
@@ -110,14 +118,6 @@ function displayMovies(url, head) {
     sec.appendChild(trend);
     main.appendChild(sec);
     trend.appendChild(tre);
-
-    for (let page = 6; page <= 10; page++) {
-        fetch(`${url}&page=${page}`, options)
-            .then(response => response.json())
-            .then(response => {
-                // console.log(response)
-
-
                 response.results.forEach(element => {
                     if (element.poster_path != null) {
                         const movieTitle = element.title;
