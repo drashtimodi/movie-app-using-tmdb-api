@@ -95,11 +95,11 @@ fetch('https://api.themoviedb.org/3/discover/movie?include_adult=false&include_v
 // top rated
 
 
-function displayMovies(url, head) {
+async function displayMovies(url, head) {
     
 
     for (let page = 6; page <= 10; page++) {
-        fetch(`${url}&page=${page}`, options)
+       await fetch(`${url}&page=${page}`, options)
             .then(response => response.json())
             .then(response => {
                 // console.log(response)
@@ -152,8 +152,15 @@ const main = document.querySelector(`main`);
 }
 
 
-function categories(head, id) {
-    const main = document.querySelector(`main`);
+async function categories(head, id) {
+    
+
+    for (let page = 2; page < 10; page++) {
+       await fetch(`https://api.themoviedb.org/3/discover/movie?page=${page}&sort_by=popularity.desc`, options)
+            .then(response => response.json())
+            .then(response => {
+                // console.log(response)
+const main = document.querySelector(`main`);
 
     const sec = document.createElement("section")
 
@@ -167,12 +174,6 @@ function categories(head, id) {
     sec.appendChild(trend);
     main.appendChild(sec);
     trend.appendChild(tre);
-
-    for (let page = 2; page < 10; page++) {
-        fetch(`https://api.themoviedb.org/3/discover/movie?page=${page}&sort_by=popularity.desc`, options)
-            .then(response => response.json())
-            .then(response => {
-                // console.log(response)
                 response.results.forEach(element => {
                     if (element.poster_path != null) {
                         const movieTitle = element.title;
@@ -223,8 +224,16 @@ categories(`Fiction`, 878);
 categories(`Mystery`, 9648);
 
 
-function names(head, id, id1) {
+async function names(head, id, id1) {
     const main = document.querySelector(`main`);
+
+
+    for (let page = 2; page < 30; page++) {
+       await fetch(`https://api.themoviedb.org/3/discover/movie?page=${page}&sort_by=popularity.desc`, options)
+            .then(response => response.json())
+            .then(response => {
+                // console.log(response)
+
 
     const sec = document.createElement("section")
 
@@ -238,12 +247,6 @@ function names(head, id, id1) {
     sec.appendChild(trend);
     main.appendChild(sec);
     trend.appendChild(tre);
-
-    for (let page = 2; page < 30; page++) {
-        fetch(`https://api.themoviedb.org/3/discover/movie?page=${page}&sort_by=popularity.desc`, options)
-            .then(response => response.json())
-            .then(response => {
-                // console.log(response)
                 response.results.forEach(element => {
                     if (element.poster_path != null) {
                         const movieTitle = element.title;
